@@ -1,0 +1,49 @@
+h1 {
+	color:white;
+}
+
+p {
+	color:white;
+}
+
+h3 {
+	background-color: rgb(102, 102, 102);
+}
+
+body {
+	background-image: url("background-photo.jpg");
+	background-color: rgb(38, 77, 115);
+	font-family: arial;
+	color:white;
+	text-align: center;
+}
+
+a {
+	color: white;
+	background-color: rgb(102, 102, 102);
+}
+
+input {
+	border: none;
+	color: rgb(38, 77, 115);
+}	
+
+#cityfield {
+	padding: 20px 20px;
+}
+
+#button {
+	padding: 20px 40px;
+}
+
+ul{
+	list-style: none;
+}
+
+#searchfield {
+	padding: 20px 20px;
+}
+
+#button2 {
+	padding: 20px 40px;
+}

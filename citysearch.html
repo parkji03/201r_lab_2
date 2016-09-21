@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>City Finder</title>
+  <link rel="stylesheet" href="citysearch.css">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function(){
+
+
+     $("#button2").click(function(e){
+      var value = $("#searchfield").val();
+      console.log(value);
+      e.preventDefault();
+      var myurl= "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle=";
+      myurl += value;
+      myurl += "&site=stackoverflow";
+      console.log(myurl);
+      $.ajax({
+        url : myurl,
+        dataType : "json",
+        success : function(parsed_json) {
+          var data = parsed_json.items;
+          console.log(data);
+          everything = "<ul>";
+
+          $.each(data, function(i, element) {
+            everything += "<li><a href=" + data[i].link + ">" + data[i].title + "</a>" + "</li>";
+            console.log(data[i].title);
+          });
+          everything += "</ul>"
+          console.log(everything);
+          $("#searchHint").html(everything);
+        }
+      });
+    });
+
+
+     $("#cityfield").keyup(function(){
+      var url="http://bioresearch.byu.edu/cs260/jquery/getcity.cgi?q="+$("#cityfield").val();
+      $.getJSON(url,function(data){
+        console.log("Got "+data);var everything;everything="<ul>";
+        $.each(data,function(i,item){everything+="<li> "+data[i].city;
+      });
+        everything+="</ul>";$("#txtHint").html(everything);
+        console.log("Got "+data[0]);
+        console.log("Got "+data[0].city);
+      });
+      $("#txtHint").text("Keyup "+$("#cityfiend").val());
+    });
+
+
+
+
+     $("#button").click(function(e){
+      var value = $("#cityfield").val();
+      console.log(value);
+      e.preventDefault();
+      $("#dispcity").text(value);
+      var myurl= "https://api.wunderground.com/api/7a7f3eda6dc2e254/geolookup/conditions/q/UT/";
+      myurl += value;
+      myurl += ".json";
+      console.log(myurl);
+      $.ajax({
+        url : myurl,
+        dataType : "jsonp",
+        success : function(parsed_json) {
+          var location = parsed_json['location']['city'];
+          var temp_string = parsed_json['current_observation']['temperature_string'];
+          var current_weather = parsed_json['current_observation']['weather'];
+          everything = "<ul>";
+          everything += "<li>Location: "+location;
+          everything += "<li>Temperature: "+temp_string;
+          everything += "<li>Weather: "+current_weather;
+          everything += "</ul>";
+          $("#weather").html(everything);
+        }
+      });
+    });
+   });
+ </script>
+
+
+</head>
+<body>
+
+
+  <h1><span div class="spanBorder">City Search</span></h1>
+  <form>
+    <span div class="spanBorder">Enter a Utah City:</span>
+    <p> 
+    <input type="text" id="cityfield" value=""><input id="button" type="submit" value="Submit">
+    <p>
+    <span div class="spanBorder">Suggestion:</span> 
+    <p>
+    <span id="txtHint"></span>
+    <br>
+  </form>
+
+<hr>
+
+  <h1><span div class="spanBorder">City</span></h1>
+  <form>
+    <textarea id="dispcity">No City</textarea>
+  </form>
+  <h1><span div class="spanBorder">Current Weather</span></h1>
+  <div id="weather">No City Selected</div>
+  <br>
+
+<hr>
+
+  <h1>Keyword Search</h1>
+  <form>
+    Enter a Key Word:
+    <p>
+    <input type="text" id="searchfield" value=""><input id="button2" type="submit" value="Search">
+    <P>
+    Search Result Links: 
+    <p>
+    <span id="searchHint"></span>
+  </form>
+
+<hr>
+
+</body>
+</html>
